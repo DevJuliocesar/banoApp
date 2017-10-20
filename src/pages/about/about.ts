@@ -10,23 +10,27 @@ import {
 } from '@ionic-native/google-maps';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Component } from '@angular/core';
+import { Events } from 'ionic-angular';
 
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html'
 })
 export class AboutPage {
+  icono: any = 'assets/markerToiletDesable.png';
   map: GoogleMap;
   mapElement: HTMLElement;
   myPosition: any = {};
+  markerOptionsJC : MarkerOptions = {};
   markers: any[] = [
     {
       position: {
-        latitude: 8.2544423,
-        longitude: -73.3597717,
+        latitude: 8.254798,
+        longitude: -73.359678,
       },
       title: 'Baño público de UFPSO sede la primavera',
-      icon: 'assets/markerToiletEnable.png'
+      snippet: 'Precio: $500',
+      icon: this.icono
     },
     {
       position: {
@@ -34,27 +38,45 @@ export class AboutPage {
         longitude: -73.3535356,
       },
       title: 'Baño público San Agustin',
+      snippet: 'Precio 500',
       icon: 'assets/markerToiletDesable.png'
     },
     {
       position: {
-        latitude: 8.2561595,
-        longitude: -73.3598927,
+        latitude: 8.256733,
+        longitude: -73.359425,
       },
       title: 'Baño público coliseo Argelino Duran Quintero',
-      icon: 'assets/markerToiletEnable.png'
+      snippet: 'Precio: $500',
+      icon: 'assets/markerToiletEnable.png',
     },
     {
       position: {
-        latitude: 8.2354683,
-        longitude: -73.3524015,
+        latitude: 8.233488,
+        longitude: -73.354158,
       },
       title: 'Baño público el Exito',
-      icon: 'assets/markerToiletDesable.png'
+      snippet: 'Precio: $500',
+      icon: 'assets/markerToiletDesable.png',
     },
   ];
 
-  constructor(private googleMaps: GoogleMaps, private geolocation: Geolocation, ) { }
+  constructor(
+    private googleMaps: GoogleMaps,
+    private geolocation: Geolocation,
+    public events: Events
+  ) {
+    events.subscribe('datos', (entrada) => {
+      console.log('Welcome', entrada);
+      if(entrada == 1){
+        this.map[1].setIcon("assets/markerToiletEnable.png");
+        this.icono = 'assets/markerToiletEnable.png';
+      } else {
+        this.map[1].setIcon("assets/markerToiletDesable.png");
+        this.icono = 'assets/markerToiletDesable.png';
+      }
+    });
+  }
 
   ionViewDidLoad() {
     this.getCurrentPosition();
@@ -93,13 +115,13 @@ export class AboutPage {
       // move the map's camera to position
       this.map.moveCamera(position);
 
-      let markerOptions: MarkerOptions = {
+      this.markerOptionsJC = {
         position: this.myPosition,
-        title: "Hello",
+        title: "Mi posicion",
         icon: 'www/assets/imgs/marker-pink.png'
       };
 
-      this.addMarker(markerOptions);
+      this.addMarker(this.markerOptionsJC);
 
       this.markers.forEach(marker => {
         this.addMarker(marker);
