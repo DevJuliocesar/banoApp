@@ -181,7 +181,6 @@ export class HomePage {
       if (entrada != ">") {
         if (entrada != "") {
           console.log(`Entrada: ${entrada}`);
-          this.presentToast(entrada);
           this.events.publish('datos', entrada);
         }
       } else {
@@ -224,7 +223,9 @@ export class HomePage {
   private presentToast(text) {
     let toast = this.toastCtrl.create({
       message: text,
-      duration: 3000
+      duration: 3000,
+      closeButtonText: 'OK',
+      showCloseButton: true
     });
     toast.present();
   }

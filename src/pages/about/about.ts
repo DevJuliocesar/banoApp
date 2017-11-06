@@ -17,7 +17,7 @@ import { Events } from 'ionic-angular';
   templateUrl: 'about.html'
 })
 export class AboutPage {
-  icono: any;
+  snippet: any;
   map: GoogleMap;
   mapElement: HTMLElement;
   myPosition: any = {};
@@ -29,17 +29,8 @@ export class AboutPage {
           longitude: -73.3535356,
         },
         title: 'Baño público San Agustin',
-        snippet: 'Precio 500',
-        icon: 'assets/markerToiletEnable.png'
-      },
-      {
-        position: {
-          latitude: 8.256733,
-          longitude: -73.359425,
-        },
-        title: 'Baño público coliseo A. D. Q.',
-        snippet: 'Precio: $700',
-        icon: 'assets/markerToiletEnable.png',
+        snippet: 'Disponible: Precio $500',
+        icon: 'assets/markerToilet.png'
       },
       {
         position: {
@@ -47,10 +38,10 @@ export class AboutPage {
           longitude: -73.354158,
         },
         title: 'Baño público el Exito',
-        snippet: 'Precio: $500',
-        icon: 'assets/markerToiletEnable.png',
+        snippet: 'Disponible: Precio: $500',
+        icon: 'assets/markerToilet.png',
       },
-    ];;
+    ];
 
   constructor(
     private googleMaps: GoogleMaps,
@@ -59,17 +50,17 @@ export class AboutPage {
   ) {
     events.subscribe('datos', (entrada) => {
       if (entrada == 1) {
-        this.icono = 'assets/markerToiletEnable.png';
+        this.snippet = 'No Disponible: Precio: $500';
         this.loadMap();
       } else {
-        this.icono = 'assets/markerToiletDesable.png';
+        this.snippet = 'Disponible: Precio: $500';
         this.loadMap();
       }
     });
   }
 
   ionViewDidLoad() {
-    this.icono = 'assets/markerToiletDesable.png';
+    this.snippet = 'Disponible: Precio: $500';
     this.getCurrentPosition();
   }
 
@@ -108,14 +99,13 @@ export class AboutPage {
           lng: -73.359678,
         },
         title: 'Baño público de UFPSO sede la primavera',
-        snippet: 'Precio: $500',
-        icon: 'assets/markerToiletDesable.png'
+        snippet: 'Disponible: Precio: $500',
+        icon: 'assets/markerToilet.png'
       })
         .then(marker => {
-          marker.setIcon(this.icono);
           marker.on(GoogleMapsEvent.MARKER_CLICK)
             .subscribe(() => {
-              marker.setIcon(this.icono);
+              marker.setSnippet(this.snippet);
             });
         });
 
